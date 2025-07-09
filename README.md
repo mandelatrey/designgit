@@ -1,7 +1,7 @@
-[desiggit-git-image](https://github.com/user-attachments/assets/6f4043e9-0ee8-49d5-8eb5-2af7de64b536)
+![desiggit-git-image](https://github.com/user-attachments/assets/6f4043e9-0ee8-49d5-8eb5-2af7de64b536)
 
-# 🎨 Designer's Guide to the !
-Project Creator Script
+# 🎨 Designer's Guide to the Project Creator Script 
+
 
 *A beginner-friendly guide for designers to manage their Adobe Creative Suite projects with automatic version control*
 
