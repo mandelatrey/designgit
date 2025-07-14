@@ -424,7 +424,12 @@ create_file() {
             
             # Launch Photoshop separately
             echo "Launching Photoshop..."
-            open -a "/Applications/Adobe Photoshop 2022/Adobe Photoshop 2022.app"
+            PHOTOSHOP_PATH=$(find_app_path "com.adobe.Photoshop")
+            if [ -n "$PHOTOSHOP_PATH" ]; then
+                open -a "$PHOTOSHOP_PATH"
+            else
+                echo "Could not find Photoshop installation. Please open it manually."
+            fi
             break
             
         elif [[ "$program" == "$illustrator" ]]; then
@@ -451,7 +456,12 @@ create_file() {
             
             # Launch Illustrator separately
             echo "Launching Illustrator..."
-            open -a "/Applications/Adobe Illustrator 2023/Adobe Illustrator.app"
+            ILLUSTRATOR_PATH=$(find_app_path "com.adobe.illustrator")
+            if [ -n "$ILLUSTRATOR_PATH" ]; then
+                open -a "$ILLUSTRATOR_PATH"
+            else
+                echo "Could not find Illustrator installation. Please open it manually."
+            fi
             break
             
         elif [[ "$program" == "$aftereffects" ]]; then
@@ -478,7 +488,12 @@ create_file() {
             
             # Launch After Effects separately
             echo "Launching After Effects..."
-            open -a "/Applications/Adobe After Effects 2022/Adobe After Effects.app"
+            AFTE_PATH=$(find_app_path "com.adobe.AfterEffects")
+            if [ -n "$AFTE_PATH" ]; then
+                open -a "$AFTE_PATH"
+            else
+                echo "Could not find After Effects installation. Please open it manually."
+            fi
             break
             
         else
@@ -497,6 +512,26 @@ create_file() {
     echo "   \"$TOOLS_DIR/auto-commit.sh\""
     echo ""
     echo "3. Documentation for all features is in project-tools/GIT-GUIDE.md"
+}
+
+find_app_path() {
+    local app_name="$1"
+    # Try mdfind first
+    local app_path
+    app_path=$(mdfind "kMDItemCFBundleIdentifier == '$app_name'" | head -n 1)
+    if [ -z "$app_path" ]; then
+        # Fallback: check common locations
+        for version in "2024" "2023" "2022" "2021"; do
+            for base in "/Applications" "$HOME/Applications"; do
+                local candidate="$base/Adobe Photoshop $version/Adobe Photoshop $version.app"
+                if [ -d "$candidate" ]; then
+                    app_path="$candidate"
+                    break 2
+                fi
+            done
+        done
+    fi
+    echo "$app_path"
 }
 
 # Main execution
